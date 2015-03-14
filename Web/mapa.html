@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	
+<head>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<title>Mapa</title>
+	<meta name="description" content="">
+	<meta name="author" content="Iban">
+	<meta name="viewport" content="width=device-width; initial-scale=1.0">
+
+	<!-- HOJA DE ESTILOS -->
+	<link rel="stylesheet" type="text/css" href="css/styles.css" />
+
+	<!-- JQUERY -->	
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+	<!-- GOOGLE APIS-->
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+	<script src="js/googleAutocomplete.js"></script>
+	<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
+	<script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/markerwithlabel/1.1.9/src/markerwithlabel.js"></script>
+	
+	<!-- INTERNACIONALIZACIÓN-->
+	<script src="js/jquery.i18n.properties.js"></script>
+	<script src="js/core.js"></script>
+
+	<script src="js/mapa.js"></script>
+    <script src="js/main.js"></script>	
+
+</head>
+
+<body onload="showlocation();">
+
+	<!-- DIV DE LA CABECERA -->
+	<header>
+	
+        <ul id="nav">
+
+        	<li><a id="home"><label for="home" class="i18n" id="mapa.home">Home</label></a></li>
+        	<li><input type="search" name="inputSearch" id="inputSearch" /></li>
+            <li><a id="registro"><label for="registrate" class="i18n" id="mapa.registrate">Regístrate</label></a></li>
+            <li><a id="inicioSesion"><label for="iniciaSesion" class="i18n" id="mapa.iniciaSesion">Inicia sesión</label></a></li>
+            <li><a class="hsubs"><label for="idioma" class="i18n" id="idioma">Idioma</label></a>
+            	<ul class="subs">
+                    <li><a id="idiomaES"><label for="idiomaCastellano" class="i18n" id="idioma.castellano">Castellano</label></a></li>
+                    <li><a id="idiomaEU"><label for="idiomaEuskera" class="i18n" id="idioma.euskera">Euskera</label></a></li>
+                    <li><a id="idiomaEN"><label for="idiomaIngles" class="i18n" id="idioma.ingles">Ingles</label></a></li>
+                </ul>
+            </li>
+            <div id="lavalamp"></div>
+
+        </ul>
+
+	</header>	
+
+	<!-- DIV QUE MUESTRA EL MAPA DE GOOGLE -->
+	<div id="map-canvas">
+	
+	</div>
+
+	<div id="map-information">
+
+	</div>
+
+</body>
+
+</html>

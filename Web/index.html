@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+  	<title>ONE DAY GUIDE</title>
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  	<meta name="description" content="">
+  	<meta name="author" content="">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script src="js/googleAutocomplete.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+
+	<script src="js/inicio.js"></script>
+
+	<style type="text/css">
+
+		h2{
+		    margin: 0;     
+		    color: #666;
+		    padding-top: 90px;
+		    font-size: 52px;
+		    font-family: "trebuchet ms", sans-serif;    
+		}
+		.item{
+		    background: #333;    
+		    text-align: center;
+		    height: 300px !important;
+		}
+		.carousel{
+		    margin-top: 20px;
+		}
+		.bs-example{
+			margin: 20px;
+		}
+
+	</style>
+
+</head>
+
+<body>
+
+	<div class="bs-example">
+
+	    <div id="myCarousel" data-ride="carousel" class="carousel slide" data-interval="2000" >
+
+	    	<!-- Carousel indicators -->
+	        <ol class="carousel-indicators">
+	            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+	            <li data-target="#myCarousel" data-slide-to="1"></li>
+	            <li data-target="#myCarousel" data-slide-to="2"></li>
+	        </ol>   
+
+	       <!-- Carousel items -->
+	        <div class="carousel-inner">
+	            <div class="active item">
+	                <h2>Slide 1</h2>
+	                <div class="carousel-caption">
+	                	<img src="img/1.jpg" />
+	                  <h3>First slide label</h3>
+	                </div>
+	            </div>
+	            <div class="item">
+	                <h2>Slide 2</h2>
+	                <div class="carousel-caption">
+	                	<img src="img/2.jpg" />
+	                  <h3>Second slide label</h3>
+	                </div>
+	            </div>
+	            <div class="item">
+	                <h2>Slide 3</h2>
+	                <div class="carousel-caption">
+	                	<img src="img/3.jpg" />
+	                  <h3>Third slide label</h3>
+	                </div>
+	            </div>
+	        </div>
+
+	        <!-- Carousel nav -->
+	        <a class="carousel-control left" href="#myCarousel" data-slide="prev">
+	            <span class="glyphicon glyphicon-chevron-left"></span>
+	        </a>
+	        <a class="carousel-control right" href="#myCarousel" data-slide="next">
+	            <span class="glyphicon glyphicon-chevron-right"></span>
+	        </a>
+        
+	 		<div class="col-md-12 form-inline" id="searchForm">
+			    <!--div class="form-group" -->
+			    <!-- div class=" col-md-12" style ="display:inline-flex" -->
+		      	<label> a donde quieres ir </label>
+		        <input id="inputSearch" type="text" class="form-control" placeholder="Search">
+		        <label> que quieres hacer</label>
+		        <input type="text" class="form-control" placeholder="Search">
+		        <!-- input type="text" class="form-control" placeholder="Search"-->
+		        <button id="btnSearch" class="form-control btn btn-primary">buscar</button>
+		        <!--span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span -->
+		      	<!-- /div -->
+			    <!--/div -->
+		  	</div>
+  
+    	</div>
+
+	</div>
+
+</body>
+
+</html>

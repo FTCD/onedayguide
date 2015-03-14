@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+			 Remove this if you use the .htaccess -->
+		<!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+
+		<title>Datos de usuario</title>
+		<meta name="description" content="">
+		<meta name="author" content="Iban">
+		<meta name="viewport" content="width=device-width; initial-scale=1.0">
+
+		<link rel="stylesheet" type="text/css" href="css/styles.css" />
+
+		<!-- JQUERY -->
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+
+		<!-- GOOGLE APIS-->
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+		<script src="js/googleAutocomplete.js"></script>
+
+		<!-- INTERNACIONALIZACIÓN-->
+		<script src="js/jquery.i18n.properties.js"></script>
+   		<script src="js/core.js"></script>
+
+   		<script src="js/main.js"></script>		
+
+   		<script src="js/registroDatos.js"></script>
+
+	</head>
+	
+	<body>
+		
+		<div id="divRegistroDatos">
+
+	        <section id=”Formulario”>
+	        	
+				<h2 class="i18n" id="registro.tituloFormulario"></h2>
+				
+				<form id="formRegistroDatos" name="formRegistroDatos">
+					
+					<p>
+						<label for="userName" class="i18n" id="registro.userName"></label><br>
+						<input type="text" name="userName" id="userName" placeholder="Escriba su nombre de usuario" autofocus />
+					</p>
+					<p>
+						<label for="email" class="i18n" id="registro.email"></label><br>
+						<input type="email" name="email" id="email" placeholder="Escriba su mail" />
+					</p>
+					<p>
+						<label for="password" class="i18n" id="registro.contrasena"></label><br>
+						<input type="password" name="password" id="password" placeholder="Escriba su contraseña" />
+					</p>
+					<p>
+						<label for="passwordConfirm" class="i18n" id="registro.confirmarContrasena"></label><br>
+						<input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirmar su contraseña" />
+					</p>
+					<p>
+						<label for="colaborador" class="i18n" id="registro.colaborador"></label><br>
+						<input type="checkbox" name="colaborador" id="colaborador" />
+					</p>
+					
+					<div id="divDatosColaborador" hidden>
+						<p>
+							<label for="direccion" class="i18n" id="registro.direccion"></label><br>
+							<input type="text" name="direccion" id="direccion" placeholder="Escriba la direccion donde usted quiere quedar con otra persona" />
+							<img id="imgDireccionValida" src='img/correct.png' style="display:none"/>
+							<img id="imgDireccionNoValida" src='img/delete.png' style="display:none"/>
+							<input type="hidden" name="latitud" id="latitud"/>
+							<input type="hidden" name="longitud" id="longitud"/>
+						</p>
+						<p>
+							<label for="telefono" class="i18n" id="registro.telefono"></label><br>
+							<input type="text" name="telefono" id="telefono" placeholder="Escriba su teléfono" />
+						</p>
+						<p id="pIdioma1">	
+							<label for="idioma1" class="i18n" id="registro.idioma"></label><br>
+							<select name="idioma1" id="idioma1" onChange="activarDesactivarCombo('idioma1','nivelIdioma1');"></select>
+							<select name="nivelIdioma1" id="nivelIdioma1" onChange="activarDesactivarCombo('nivelIdioma1','idioma2');" disabled="disabled">
+							</select>
+							<a title="Añadir" id="anadirIdioma1" name="anadirIdioma1" 
+							   onClick="anadirIdioma(2);"><img src="img/add.png"/></a>
+						</p>
+						<p id="pActividad1">
+							<label for="actividad1" class="i18n" id="registro.actividad"></label><br>
+							<select id="actividad1" name="actividad1" onChange="activarDesactivarCombo(
+								'actividad1','disponibilidadDia1', aDisponibilidadesActividad, 'registro.seleccionDisponibilidad');">
+							</select>
+							<select name="disponibilidadDia1" id="disponibilidadDia1"
+								    onChange="activarDesactivarCombo('disponibilidadDia1','disponibilidadHora1');" disabled="disabled">
+							</select>
+							<select name="disponibilidadHora1" id="disponibilidadHora1"
+								    onChange="activarDesactivarCombo('disponibilidadHora1','actividad2');" disabled="disabled">
+							</select>
+							<a title="Añadir" id="anadirActividad1" name="anadirActividad1" 
+							   onClick="anadirActividad(2);"><img src="img/add.png"/></a>
+						</p>
+					</div>
+					
+					<p>
+						<button type="button" name="btnAceptar" id="btnAceptar"><label class="i18n" id="registro.botonAceptar"/></button>
+						<button type="button" name="btnLimpiar" id="btnLimpiar"><label class="i18n" id="registro.botonLimpiar"/></button>
+					</p>
+
+				</form>
+				
+			</section>
+
+		</div>
+		
+	</body>
+	
+</html>

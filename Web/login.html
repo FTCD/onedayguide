@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+
+		<title>Login</title>
+		<meta name="description" content="">
+		<meta name="author" content="Iban">
+		<meta name="viewport" content="width=device-width; initial-scale=1.0">
+
+		<!-- HOJA DE ESTILOS -->
+		<link rel="stylesheet" type="text/css" href="css/styles.css" />
+        
+         <!--JQUERY-->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+		
+    </head>
+    
+    <script>
+    	
+    	$(document).ready(function(){
+	
+			//Nos indica desde que pantalla llegamos a registrar
+			//accion = leerGET();
+			
+			$('#submit').click(function(){
+				
+				//Si pasa la validación se submite
+			    if($("formLogin")[0].checkValidity()) {
+					$formLogin.submit();
+			    }
+			    
+			});
+			
+			$('form#formLogin #btnRegistro').click(function() {
+				
+				//Cargamos el formulario en el div central de la página de inicio
+				$("#map-canvas").load('registroDatos.html');
+				
+			});
+			
+	   });
+	   
+    </script>
+    
+    <body>
+    
+        <div id="divLogin">
+
+	        <section id=”Formulario”>
+				
+				<form name="formLogin" id="formLogin" method="post" enctype="multipart/form-data">
+					
+					<fieldset>
+						<label for="login">Login: </label>
+						<input type="text" name="login" id="login" placeholder="Escriba su nombre de usuario" required="" autofocus="true"/>
+					</fieldset>
+					<fieldset>	
+						<label for="password">Password: </label>
+						<input type="password" name="password" id="password" placeholder="Escriba su contraseña" required="required"/>
+					</fieldset>
+					<fieldset>
+						<a href="">Login</a>
+						<a href="registroDatos.html?accion=login">Registrarse</a>
+					</fieldset>
+					<fieldset>
+						<button type="submit" name="btnLogin" id="btnLogin">Login</button>
+						<button type="button" name="btnRegistro" id="btnRegistro">Registrarse</button>
+					</fieldset>
+				
+					<!-- Botón que activa el panel -->
+					<a href="#" id="abre_tab">
+					    <div id="tab"> 
+					        <div id="tab_interna">
+					 
+					        </div>
+					    </div> 
+					</a>
+				
+				</form>
+				
+			</section>
+			
+		</div>
+        
+    </body>
+</html>
