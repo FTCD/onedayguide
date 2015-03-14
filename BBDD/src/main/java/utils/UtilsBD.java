@@ -19,7 +19,7 @@ public class UtilsBD {
     	
     	System.out.println("GETBASEDATOS");
         String user = "admin";
-        String password = "jrdp1DhtneJN";
+        String password = "b6iuICaK79EW";
     	MongoCredential credential = MongoCredential.createCredential(user, baseDeDatos, password.toCharArray());
     	System.out.println("CREDENTIALS");
         MongoClient mongoClient = new MongoClient(new ServerAddress(mongoURIString), Arrays.asList(credential));
