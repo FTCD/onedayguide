@@ -21,8 +21,6 @@ public class UsuarioBusiness {
 		System.out.println("GETUSUARIOS");
 		String usuario = UsuarioBD.getUsuarios();
 		
-		String prueba = usuario;
-		
 		List<Usuario> aUsuarios = new ArrayList<Usuario>();
 		
 		ArrayList<List> aActividadesDisponibilidades = new ArrayList<List>();
@@ -59,8 +57,7 @@ public class UsuarioBusiness {
 		
 		Usuario user = new Usuario();
 
-		//user.setUserName(usuario);
-		user.setUserName("locura");
+		user.setUserName(usuario);
 		user.setPassword("prueba");
 		user.setEmail("user1@gmail.com");
 		user.setListaIdiomas(aIdiomasNivel);

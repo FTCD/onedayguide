@@ -18,7 +18,12 @@ public class UsuarioBD {
 		
 		try {
 			
+			//Para pruebas en servidor openshift
 			DB baseDatos = UtilsBD.getBaseDatos("mongodb://$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/", "onedayguide");
+			
+			//Para pruebas en local
+			//DB baseDatos = UtilsBD.getBaseDatos("mongodb://127.0.0.1:27017/", "onedayguide");
+			
 			DBCollection tablaUsuarios = UtilsBD.getColeccion(baseDatos, "usuarios");
 			
 			DBCursor cursor = tablaUsuarios.find();

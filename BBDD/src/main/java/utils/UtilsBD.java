@@ -1,6 +1,7 @@
 package main.java.utils;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 
 import com.mongodb.DB;
@@ -10,23 +11,42 @@ import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
 public class UtilsBD {
-
+	
     public UtilsBD() throws IOException {
 
     }
   		
     public static DB getBaseDatos(String mongoURIString, String baseDeDatos) throws IOException {
-    	
-    	System.out.println("GETBASEDATOS");
-        String user = "admin";
-        String password = "b6iuICaK79EW";
-    	MongoCredential credential = MongoCredential.createCredential(user, baseDeDatos, password.toCharArray());
-    	System.out.println("CREDENTIALS");
-        MongoClient mongoClient = new MongoClient(new ServerAddress(mongoURIString), Arrays.asList(credential));
-        System.out.println("CLIENT");
-        DB dataBaseDB = mongoClient.getDB(baseDeDatos);
-        System.out.println("DATABASE");
-        return dataBaseDB;
+
+    	String host = System.getenv("OPENSHIFT_MONGODB_DB_HOST");
+    	int port = Integer.parseInt(System.getenv("OPENSHIFT_MONGODB_DB_PORT"));
+        
+        //String user = System.getenv("admin");
+        //String password = System.getenv("b6iuICaK79EW");
+
+        try {
+        	
+        	//MongoCredential credential = MongoCredential.createCredential(user, baseDeDatos, password.toCharArray());
+        	//MongoClient mongoClient = new MongoClient(new ServerAddress(mongoURIString), Arrays.asList(credential));
+        	MongoClient mongoClient = new MongoClient(new ServerAddress(host, port));
+            DB dataBaseDB = mongoClient.getDB("onedayguide");
+            
+            boolean auth = dataBaseDB.authenticate("admin", "b6iuICaK79EW".toCharArray());
+        	if (auth) {
+         
+        		return dataBaseDB;
+        		
+        	} else {
+
+        		return null;
+        		
+        	}
+            
+        } catch (UnknownHostException e) {
+        	System.out.println("ERROR");
+        }
+        
+        return null;
         
     }
     
