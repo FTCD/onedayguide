@@ -17,88 +17,35 @@ public class UsuarioBusiness {
 	}
 	
 	public static List<Usuario> getUsuarios(){
+
+		//List<Usuario> aUsuarios = UsuarioBD.getUsuarios();
 		
-		System.out.println("GETUSUARIOS");
-		String usuario = UsuarioBD.getUsuarios();
+		List<String> idioma = new ArrayList<String>();
+		idioma.add("Castellano");
+		idioma.add("Nativo");
+		List<List> listaIdiomas = new ArrayList<List>();
+		listaIdiomas.add(idioma);
+		
+		List<String> actividad = new ArrayList<String>();
+		actividad.add("Deporte");
+		actividad.add("Entre semana");
+		actividad.add("Día");
+		List<List> listaActividades = new ArrayList<List>();
+		listaActividades.add(actividad);
+		
+		listaIdiomas.add(idioma);
+		Usuario usuario = new Usuario();
+		usuario.setUserName("Iban");
+		usuario.setColaborador(true);
+		usuario.setDireccion("Prueba");
+		usuario.setLatitud(43.1212476);
+		usuario.setLongitud(-3.130108);
+		usuario.setEmail("iban@gmail.com");
+		usuario.setListaIdiomas(listaIdiomas);
+		usuario.setListaActividades(listaActividades);
 		
 		List<Usuario> aUsuarios = new ArrayList<Usuario>();
-		
-		ArrayList<List> aActividadesDisponibilidades = new ArrayList<List>();
-		ArrayList<String> aDatos = new ArrayList<String>();
-		aDatos.add("Turismo deportivo");
-		aDatos.add("Entre semana");
-		aDatos.add("Mañana");
-		aActividadesDisponibilidades.add(aDatos);
-		aDatos = new ArrayList<String>();
-		aDatos.add("Turismo nocturno");
-		aDatos.add("Entre semana");
-		aDatos.add("Noche");
-		aActividadesDisponibilidades.add(aDatos);
-		aDatos = new ArrayList<String>();
-		aDatos.add("Turismo gastronomico");
-		aDatos.add("Entre semana");
-		aDatos.add("Mañana");
-		aActividadesDisponibilidades.add(aDatos);
-		aDatos = new ArrayList<String>();
-		aDatos.add("Turismo cultural");
-		aDatos.add("Entre semana");
-		aDatos.add("Tarde");
-		aActividadesDisponibilidades.add(aDatos);
-		
-		ArrayList<List> aIdiomasNivel = new ArrayList<List>();
-		aDatos = new ArrayList<String>();
-		aDatos.add("Castellano");
-		aDatos.add("Nativo");
-		aIdiomasNivel.add(aDatos);
-		aDatos = new ArrayList<String>();
-		aDatos.add("Ingles");
-		aDatos.add("Medio");
-		aIdiomasNivel.add(aDatos);
-		
-		Usuario user = new Usuario();
-
-		user.setUserName(usuario);
-		user.setPassword("prueba");
-		user.setEmail("user1@gmail.com");
-		user.setListaIdiomas(aIdiomasNivel);
-		user.setListaActividades(aActividadesDisponibilidades);
-		user.setLatitud(43.3595019);
-		user.setLongitud(-3.0051472);
-		
-		aUsuarios.add(user);
-		
-		user = new Usuario();
-		user.setUserName("User 2");
-		user.setPassword("prueba");
-		user.setEmail("user2@gmail.com");
-		user.setListaIdiomas(aIdiomasNivel);
-		user.setListaActividades(aActividadesDisponibilidades);
-		user.setLatitud(43.062897);
-		user.setLongitud(-3.005718);
-		
-		aUsuarios.add(user);
-		
-		user = new Usuario();
-		user.setUserName("User 3");
-		user.setPassword("prueba");
-		user.setEmail("user3@gmail.com");
-		user.setListaIdiomas(aIdiomasNivel);
-		user.setListaActividades(aActividadesDisponibilidades);
-		user.setLatitud(43.150625);
-		user.setLongitud(-2.956279);
-		
-		aUsuarios.add(user);
-		
-		user = new Usuario();
-		user.setUserName("User 4");
-		user.setPassword("prueba");
-		user.setEmail("user4@gmail.com");
-		user.setListaIdiomas(aIdiomasNivel);
-		user.setListaActividades(aActividadesDisponibilidades);
-		user.setLatitud(43.207206);
-		user.setLongitud(-3.061336);
-		
-		aUsuarios.add(user);
+		aUsuarios.add(usuario);
 		
 		return aUsuarios;
 

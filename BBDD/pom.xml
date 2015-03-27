@@ -16,6 +16,14 @@
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	
+	<dependencies>
+		<dependency>
+   			<groupId>ODGGroup</groupId>
+   			<artifactId>Entities</artifactId>
+   			<version>0.0.1-SNAPSHOT</version>
+   		</dependency>
+	</dependencies>
+	
 	<build>
   		<finalName>BBDD</finalName>
 	</build>

@@ -350,18 +350,24 @@ function cargarInformacionUsuarios(users){
     	}
 
         codigoHtml = codigoHtml + 
-        	"<div id='divUsuario'>"+
+        	"<div id='divUsuario'"+i+" onmousemove=buscarUsuarioEnMapa("+i+");>"+
             	"<h4>"+user[0]+"</h4>"+
                 "<div id='divActividadesUsuario'>" +
                     "<p><b>Email: </b>"+user[3]+"</p>" +
                     idiomas + actividades +
                 "</div>"+
         	"</div>";
-    	
+        
   	}
-
+	
 	$('#map-information').html(codigoHtml); 
 
+}
+
+function buscarUsuarioEnMapa(num){
+	
+	alert("Usuario :" + num);
+	
 }
 
 $(document).ready(function(){

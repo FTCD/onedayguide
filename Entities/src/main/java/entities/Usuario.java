@@ -16,7 +16,9 @@ public class Usuario{
 	Double longitud;
 	String telefono;
 	
+	@SuppressWarnings("rawtypes")
 	List<List> listaIdiomas;
+	@SuppressWarnings("rawtypes")
 	List<List> listaActividades;
 	
 	public String getUserName() {
@@ -83,18 +85,22 @@ public class Usuario{
 		this.telefono = telefono;
 	}
 
+	@SuppressWarnings({ "rawtypes" })
 	public List<List> getListaIdiomas() {
 		return listaIdiomas;
 	}
 
+	@SuppressWarnings({ "rawtypes" })
 	public void setListaIdiomas(List<List> listaIdiomas) {
 		this.listaIdiomas = listaIdiomas;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List<List> getListaActividades() {
 		return listaActividades;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void setListaActividades(List<List> listaActividades) {
 		this.listaActividades = listaActividades;
 	}

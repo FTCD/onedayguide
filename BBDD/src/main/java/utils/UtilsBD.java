@@ -2,12 +2,11 @@ package main.java.utils;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
 public class UtilsBD {
@@ -16,7 +15,7 @@ public class UtilsBD {
 
     }
   		
-    public static DB getBaseDatos(String mongoURIString, String baseDeDatos) throws IOException {
+    public static DB getBaseDatos() throws IOException {
 
     	String host = System.getenv("OPENSHIFT_MONGODB_DB_HOST");
     	int port = Integer.parseInt(System.getenv("OPENSHIFT_MONGODB_DB_PORT"));
@@ -53,6 +52,18 @@ public class UtilsBD {
     public static DBCollection getColeccion(DB database, String mongoColeccion) throws IOException {
     	
         DBCollection coleccion = database.getCollection(mongoColeccion);
+        
+        return coleccion;
+
+    }
+    
+    @SuppressWarnings("null")
+	public static DBCollection setColeccion(DB database, String mongoColeccion, DBObject dbObject) throws IOException {
+    	
+        DBCollection coleccion = database.getCollection(mongoColeccion);
+        if(coleccion == null){
+        	coleccion.insert(dbObject);
+        }
         return coleccion;
 
     }
