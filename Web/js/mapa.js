@@ -4,10 +4,12 @@
 var idiomaSel = "es";//Idioma seleccionado en la página.
 
 var map = null;
-var buscarUsuarios = true;
+var anadirListener = true;
+//var buscarUsuarios = true;
 
 //Variables para capturar la localidad introducida en la página de inicio.
 
+var markers = [];
 var localidad = unescape(getUrlVars()["localidad"]);//Obtenemos la localidad introducida en la página de inicio.
 var latitudLocalidad;//Aqui dejaremos la latitud de la localidad introducida por el usuario.
 var longitudLocalidad;//Aqui dejaremos la longitud de la localidad introducida por el usuario.
@@ -82,75 +84,25 @@ function showlocation(){
 function callback(){
 
 	var homeLatLong=new google.maps.LatLng(latitudLocalidad,longitudLocalidad);
-
-  	/*var marker = new MarkerWithLabel({
-       	position: homeLatLong,
-       	map: map,
-       	draggable: true,
-      	raiseOnDrag: true,
-       	labelContent: "",
-       	labelAnchor: new google.maps.Point(60, 0),
-       	labelClass: "labelMarker", // the CSS class for the label
-       	labelInBackground: false
-    });*/
 	
 	//Solo realizamos la búsqueda de usuarios una vez ya que de momento se
 	//buscan todos. Si se cambia esto y se realizan búsquedas mas concretas
 	//hay que quitar esto.
-	if(buscarUsuarios){
+	//if(buscarUsuarios){
 
-		//Obtenemos los datos de usuarios mediante el servicio web y
-		//se añaden las posiciones de los distintos usuarios de la zona
-		fObtenerListaUsuarios(map);
-
+	//Obtenemos los datos de usuarios mediante el servicio web y
+	//se añaden las posiciones de los distintos usuarios de la zona
+	fObtenerListaUsuarios(map);
+	
+	if(anadirListener) {
+		//Solo se añade el listener la primera vez que se accede a la pantalla.
 		anadirListenerInputBuscar();
-
+		anadirListener = false;
 	}
 	
 	map.setZoom(9);
 	map.setCenter(homeLatLong);
 
-  /*var bounds = map.getBounds();
-  var ne = bounds.getNorthEast();
-  var sw = bounds.getSouthWest();
-
-  alert(ne);
-  alert(sw);
-
-  var latLong = new google.maps.LatLng(ne.lat(), ne.lng());
-  bounds.extend(latLong);
-
-  var markers = [];
-  //Crear el marcador
-  var marker = new google.maps.Marker({
-      position: latLong,
-      map: map,
-      //icon: image,
-      //shape: shape,
-      title: "PRUEBA"
-  });
-
-  //Se añade al array de markers para agrupar
-  markers.push(marker);
-
-  latLong = new google.maps.LatLng(sw.lat(), sw.lng());
-  bounds.extend(latLong);
-
-  //Crear el marcador
-  marker = new google.maps.Marker({
-      position: latLong,
-      map: map,
-      //icon: image,
-      //shape: shape,
-      title: "PRUEBA 2"
-  });
-  
-  //Se añade al array de markers para agrupar
-  markers.push(marker);
-
-  //Se agrupan los markers
-  var markerCluster = new MarkerClusterer(map, markers);*/
-	
 }
 
 /* Función que añade un listener al inputSearch de cabecera para que ejecute
@@ -158,8 +110,8 @@ function callback(){
 function anadirListenerInputBuscar(){
 
 	document.getElementById('inputSearch').addEventListener('keypress', function(event) {
-		/* Se captura la tecla intro */
-        if (event.keyCode == 13) {
+		/* Se captura la tecla intro o tabulador y el boton izquierdo del raton */
+        if (event.keyCode == 13 || event.keyCode == 9 || event.button == 0) {//Lo del boton no funciona
         	fLocalizarLocalidad();
         }
     });
@@ -171,7 +123,7 @@ function anadirListenerInputBuscar(){
 function fLocalizarLocalidad(){
 
 	if(document.getElementById('inputSearch').value!=""){
-
+		markers = [];
 		localidad = document.getElementById('inputSearch').value;
 		//buscarUsuarios = false;
 		showlocation();
@@ -195,13 +147,13 @@ function fObtenerListaUsuarios(map){
         timeout: 60000,
         success: function(data){
             for (var i = 0; i < data.length; i++) {		                	
-    					var userName = data[i].userName;
-    					var latitud = data[i].latitud;
-    					var longitud = data[i].longitud;
-    					var email = data[i].email;
-              var aIdiomasNivel = data[i].listaIdiomas;
-    					var aActividadesDisponibilidad = data[i].listaActividades;
-    					users[i] = [userName, latitud, longitud, email, aIdiomasNivel, aActividadesDisponibilidad, i];
+				var userName = data[i].userName;
+				var latitud = data[i].latitud;
+				var longitud = data[i].longitud;
+				var email = data[i].email;
+				var aIdiomasNivel = data[i].listaIdiomas;
+				var aActividadesDisponibilidad = data[i].listaActividades;
+				users[i] = [userName, latitud, longitud, email, aIdiomasNivel, aActividadesDisponibilidad, i];
             }
             fAnadirMarkers(map, users);
             cargarInformacionUsuarios(users);
@@ -230,7 +182,6 @@ function fAnadirMarkers(map, users){
 /* Función que pone los marcadores de los usuarios en el mapa. */ 
 function setMarkers(map, users) {
 	
-	var markers = [];	
   	// Add markers to the map
 
 	// Marker sizes are expressed as a Size of X,Y
@@ -283,17 +234,17 @@ function setMarkers(map, users) {
   	marker = new google.maps.Marker({
       	position: latLong,
       	map: map,
-      	//icon: image,
+      	icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
       	shape: shape,
       	title: user[0],
       	zIndex: user[6],
       	contenido:
 	        "<div id=\"content\">"+
 	            "<h4>"+user[0]+"</h4>"+
-	                "<div id=\"bodyContent\">" +
-	                    "<p><b>Email: </b>"+user[3]+"</p>" +
+	            "<div id=\"bodyContent\">" +
+	            	"<p><b>Email: </b>"+user[3]+"</p>" +
 	                    idiomas + actividades +
-	                "</div>"+
+	            "</div>"+
 	        "</div>"
   	});
     
@@ -341,20 +292,20 @@ function cargarInformacionUsuarios(users){
     	
       var idiomas = "";
       for(var j=0; j<user[4].length; j++){
-        idiomas = idiomas + "<p><b>Idioma "+(j+1)+": </b> "+user[4][j]+"</p> ";
+        idiomas = idiomas + "<p><i>Idioma "+(j+1)+": </i> "+user[4][j]+"</p> ";
       }
 
     	var actividades = "";
     	for(var j=0; j < user[5].length; j++){
-    		actividades = actividades + "<p><b>Actividad "+(j+1)+": </b> "+user[5][j]+"</p> ";
+    		actividades = actividades + "<p><i>Actividad "+(j+1)+": </i> "+user[5][j]+"</p> ";
     	}
 
         codigoHtml = codigoHtml + 
-        	"<div id='divUsuario'"+i+" onmousemove=buscarUsuarioEnMapa("+i+");>"+
-            	"<h4>"+user[0]+"</h4>"+
+        	"<div id='divUsuario'"+i+" onmouseover=seleccionarMarkerUsuario("+i+"); " +
+        			" onmouseleave=deseleccionarMarkerUsuario("+i+");>"+
+            	"<h4><u>"+user[0]+"</u></h4>"+
                 "<div id='divActividadesUsuario'>" +
-                    "<p><b>Email: </b>"+user[3]+"</p>" +
-                    idiomas + actividades +
+                    "<p><i>Email: </i>"+user[3]+"</p>" + idiomas + actividades +
                 "</div>"+
         	"</div>";
         
@@ -364,10 +315,12 @@ function cargarInformacionUsuarios(users){
 
 }
 
-function buscarUsuarioEnMapa(num){
-	
-	alert("Usuario :" + num);
-	
+function seleccionarMarkerUsuario(num){
+	markers[num].setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+}
+
+function deseleccionarMarkerUsuario(num){
+	markers[num].setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
 }
 
 $(document).ready(function(){
@@ -377,7 +330,7 @@ $(document).ready(function(){
 		//Recargamos la página de inicio
 		//location.reload();
 
-		document.location.href = "inicio.html";
+		document.location.href = "index.html";
 		
     });
 	
@@ -416,11 +369,9 @@ $(document).ready(function(){
 	});
 
 	//Cuando se cambie la ciudad se realiza la nueva búsqueda
-    $("#inputSearch").on('change', function(){
-    	
-	    fLocalizarLocalidad();
-		 
-	});
+    //$("#inputSearch").on('change', function(){
+	//    fLocalizarLocalidad();
+	//});
 
 	//Añade un listener al campo search para el autocompletado de google
 	inicializarCiudad("inputSearch");
