@@ -36,17 +36,14 @@ public class UsuarioServices {
 		 
 	}
 		
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@GET
-	@Path("/getUsers")
-	@Produces("application/x-javascript")
-	public JSONWithPadding<Usuario> getUsers (@QueryParam("callback") String callback) {
+	@Path("/getUsers/{latitud}/{longitud}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getUsers (@QueryParam("callback") String callback,
+			@PathParam("latitud") String latitud,
+			@PathParam("longitud") String longitud) {
 		
-		ArrayList<Usuario> aUsuarios = new ArrayList<Usuario>();
-		
-		aUsuarios = (ArrayList<Usuario>) UsuarioBusiness.getUsuarios();
-		
-		return new JSONWithPadding (aUsuarios,callback);
+		return UsuarioBusiness.getUsers(latitud, longitud);
 		 
 	}
 	
