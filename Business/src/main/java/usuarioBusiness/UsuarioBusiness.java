@@ -1,8 +1,5 @@
 package main.java.usuarioBusiness;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import main.java.entities.Usuario;
 import main.java.usuarioBD.UsuarioBD;
 
@@ -16,13 +13,13 @@ public class UsuarioBusiness {
 		
 	}
 	
-	public static List<Usuario> getUsuarios(){
+	public static String getUsers(String latitud, String longitud){
 
 		//List<Usuario> aUsuarios = UsuarioBD.getUsuarios();
 		
-		List<Usuario> aUsuarios = new ArrayList<Usuario>();
+		//List<Usuario> aUsuarios = new ArrayList<Usuario>();
 		
-		List<String> idioma = new ArrayList<String>();
+		/*List<String> idioma = new ArrayList<String>();
 		idioma.add("Castellano");
 		idioma.add("Nativo");
 		List<List> listaIdiomas = new ArrayList<List>();
@@ -97,9 +94,11 @@ public class UsuarioBusiness {
 		usuario.setListaIdiomas(listaIdiomas);
 		usuario.setListaActividades(listaActividades);
 		
-		aUsuarios.add(usuario);
+		aUsuarios.add(usuario);*/
 		
-		return aUsuarios;
+		//return aUsuarios;
+		
+		return UsuarioBD.getUsers(latitud, longitud);
 
 	}
 
