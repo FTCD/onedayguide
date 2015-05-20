@@ -52,7 +52,7 @@ function initMap(){
     alert("CAMBIO O MOVIMIENTO EN EL MAPA");
 
   });*/
-		
+	
 }
 
 //3- Ejecuta el showlocation que es quien realiza la llamada a callback.
@@ -85,11 +85,9 @@ function callback(){
 
 	var homeLatLong=new google.maps.LatLng(latitudLocalidad,longitudLocalidad);
 	
-	//Solo realizamos la búsqueda de usuarios una vez ya que de momento se
-	//buscan todos. Si se cambia esto y se realizan búsquedas mas concretas
-	//hay que quitar esto.
-	//if(buscarUsuarios){
-
+	map.setZoom(9);
+	map.setCenter(homeLatLong);
+	
 	//Obtenemos los datos de usuarios mediante el servicio web y
 	//se añaden las posiciones de los distintos usuarios de la zona
 	fObtenerListaUsuarios(map);
@@ -100,9 +98,6 @@ function callback(){
 		anadirListener = false;
 	}
 	
-	map.setZoom(9);
-	map.setCenter(homeLatLong);
-
 }
 
 /* Función que añade un listener al inputSearch de cabecera para que ejecute
@@ -137,23 +132,25 @@ function fLocalizarLocalidad(){
 function fObtenerListaUsuarios(map){
 	
 	var users = new Array();
+	var coordinates = map.getCenter();
+	
 	try {
     
       $.ajax({
         type: "GET",
-        url: dir + "/OneDayGuide/rest/usuario/getUsers",
-        dataType: "jsonp",
+        url: dir + "/OneDayGuide/rest/usuario/getUsers/" + coordinates.lat() + "/" +coordinates.lng(),
+        dataType: "json",
         contentType: "application/json; charset=utf-8",
         timeout: 60000,
         success: function(data){
-            for (var i = 0; i < data.length; i++) {		                	
-				var userName = data[i].userName;
+            for (var i = 0; i < data.length; i++) {	
+            	var email = data[i].email;
 				var latitud = data[i].latitud;
 				var longitud = data[i].longitud;
-				var email = data[i].email;
-				var aIdiomasNivel = data[i].listaIdiomas;
-				var aActividadesDisponibilidad = data[i].listaActividades;
-				users[i] = [userName, latitud, longitud, email, aIdiomasNivel, aActividadesDisponibilidad, i];
+				var colaborador = data[i].colaborador;
+				var listaIdiomas = data[i].listaIdiomas;
+				var listaActividades = data[i].listaActividades;
+				users[i] = [email, latitud, longitud, listaIdiomas, listaActividades, i];
             }
             fAnadirMarkers(map, users);
             cargarInformacionUsuarios(users);
@@ -216,46 +213,45 @@ function setMarkers(map, users) {
 	var marker = null;
 	for (var i = 0; i < users.length; i++) {
 		
-  	var user = users[i];
-  	var latLong = new google.maps.LatLng(user[1], user[2]);
-  	bounds.extend(latLong);
-  	
-    var idiomas = "";
-    for(var j=0; j<user[4].length; j++){
-      idiomas = idiomas + "<p><b>Idioma "+(j+1)+": </b> "+user[4][j]+"</p> ";
-    }
-
-  	var actividades = "";
-  	for(var j=0; j<user[5].length; j++){
-      actividades = actividades + "<p><b>Actividad "+(j+1)+": </b> "+user[5][j]+"</p> ";
-  	}
-
-  	//Crear el marcador
-  	marker = new google.maps.Marker({
-      	position: latLong,
-      	map: map,
-      	icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-      	shape: shape,
-      	title: user[0],
-      	zIndex: user[6],
-      	contenido:
-	        "<div id=\"content\">"+
-	            "<h4>"+user[0]+"</h4>"+
-	            "<div id=\"bodyContent\">" +
-	            	"<p><b>Email: </b>"+user[3]+"</p>" +
+	  	var user = users[i];
+	  	var latLong = new google.maps.LatLng(user[1], user[2]);
+	  	bounds.extend(latLong);
+	  	
+	    var idiomas = "";
+	    for(var j=0; j<user[3].length; j++){
+	      idiomas = idiomas + "<p><b>Idioma "+(j+1)+": </b> "+user[3][j]+"</p> ";
+	    }
+	
+	  	var actividades = "";
+	  	for(var j=0; j<user[4].length; j++){
+	      actividades = actividades + "<p><b>Actividad "+(j+1)+": </b> "+user[4][j]+"</p> ";
+	  	}
+	
+	  	//Crear el marcador
+	  	marker = new google.maps.Marker({
+	      	position: latLong,
+	      	map: map,
+	      	icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+	      	shape: shape,
+	      	title: user[0],
+	      	zIndex: user[5],
+	      	contenido:
+		        "<div id=\"content\">"+
+		            "<h4>"+user[0]+"</h4>"+
+		            "<div id=\"bodyContent\">" +
 	                    idiomas + actividades +
-	            "</div>"+
-	        "</div>"
-  	});
-    
-    //Añadir listener a cada marker para que abra su información
-  	google.maps.event.addListener(marker, "click", function () { 
-  		infowindow.setContent(this.contenido);
-		infowindow.open(map, this);
-  	});
-  	
-  	//Se añade al array de markers para agrupar
-  	markers.push(marker);
+		            "</div>"+
+		        "</div>"
+	  	});
+	    
+	    //Añadir listener a cada marker para que abra su información
+	  	google.maps.event.addListener(marker, "click", function () { 
+	  		infowindow.setContent(this.contenido);
+			infowindow.open(map, this);
+	  	});
+	  	
+	  	//Se añade al array de markers para agrupar
+	  	markers.push(marker);
   	
 	}
 	
@@ -290,14 +286,14 @@ function cargarInformacionUsuarios(users){
   		
     	var user = users[i];
     	
-      var idiomas = "";
-      for(var j=0; j<user[4].length; j++){
-        idiomas = idiomas + "<p><i>Idioma "+(j+1)+": </i> "+user[4][j]+"</p> ";
-      }
+	    var idiomas = "";
+	    for(var j=0; j<user[3].length; j++){
+	    	idiomas = idiomas + "<p><i>Idioma "+(j+1)+": </i> "+user[3][j]+"</p> ";
+	    }
 
     	var actividades = "";
-    	for(var j=0; j < user[5].length; j++){
-    		actividades = actividades + "<p><i>Actividad "+(j+1)+": </i> "+user[5][j]+"</p> ";
+    	for(var j=0; j < user[4].length; j++){
+    		actividades = actividades + "<p><i>Actividad "+(j+1)+": </i> "+user[4][j]+"</p> ";
     	}
 
         codigoHtml = codigoHtml + 
@@ -305,7 +301,7 @@ function cargarInformacionUsuarios(users){
         			" onmouseleave=deseleccionarMarkerUsuario("+i+");>"+
             	"<h4><u>"+user[0]+"</u></h4>"+
                 "<div id='divActividadesUsuario'>" +
-                    "<p><i>Email: </i>"+user[3]+"</p>" + idiomas + actividades +
+                    idiomas + actividades +
                 "</div>"+
         	"</div>";
         

@@ -6,8 +6,8 @@ var geocoder = new google.maps.Geocoder();
 
 //Variables para las listas cargadas de BD
 var aActividades = new Array();
-var aDisponibilidadesActividad = new Array();
-var aDisponiblidadHoraActividad = new Array();
+var aDiasActividades = new Array();
+var aHorariosActividades = new Array();
 var aIdiomas = new Array();
 var aNivelIdiomas = new Array();
 
@@ -69,8 +69,8 @@ $(document).ready(function(){
         	$("#divDatosColaborador").show("slow");
         	//Se carga el combo de actividades.
         	fCargarCombo(aActividades, "actividad1", "registro.seleccionActividad");
-        	fCargarCombo(aDisponibilidadesActividad, "disponibilidadDia1", "registro.seleccionDisponibilidad");
-        	fCargarCombo(aDisponiblidadHoraActividad, "disponibilidadHora1", "registro.seleccionHorario");
+        	fCargarCombo(aDiasActividades, "disponibilidadDia1", "registro.seleccionDisponibilidad");
+        	fCargarCombo(aHorariosActividades, "disponibilidadHora1", "registro.seleccionHorario");
         	fCargarCombo(aIdiomas, "idioma1", "registro.seleccionIdioma");
         	fCargarCombo(aNivelIdiomas, "nivelIdioma1", "registro.seleccionNivel");
         }else{
@@ -363,17 +363,17 @@ $(document).ready(function(){
 	inicializarDireccion("direccion");
 
 	//Cargar la lista de actividades
-    fObtenerLista("getActividades", aActividades);
+    fObtenerLista("actividades", aActividades);
 
-    //Cargar la lista de disponibilidades de las actividades
-	fObtenerLista("getDisponibilidadesActividad", aDisponibilidadesActividad);
-	fObtenerLista("getDisponibilidadesHoraActividad", aDisponiblidadHoraActividad);
+    //Cargar la lista de días y horarios de las actividades
+	fObtenerLista("diasActividades", aDiasActividades);
+	fObtenerLista("horariosActividades", aHorariosActividades);
 	
 	//Cargar la lista de idiomas
-	fObtenerLista("getIdiomas", aIdiomas);
-
+	fObtenerLista("idiomas", aIdiomas);
+	
 	//Cargar la lista de niveles de los idiomas
-	fObtenerLista("getNivelIdiomas", aNivelIdiomas);
+	fObtenerLista("nivelesIdiomas", aNivelIdiomas);
 	
 });
 
@@ -390,47 +390,50 @@ function getUrlVars() {
 
 }
 
-function fCargarArray(data, array){
-
-	for (var i = 0; i < data.length; i++) {		                	
-		var cod = data[i].cod;
-		var desc;
-		if(idioma=="en-Idioma"){
-			desc = data[i].descIngles;
-		}else if(idioma=="eu-Idioma"){
-			desc = data[i].descEuskera;
-		}else{
-			desc = data[i].descCastellano;
-		}
-		array[i] = [cod, desc];
-    }
-
-}
-
-/* Función que obtiene la lista de actividades de la base de datos. Para
-   ello realiza una llamada ajax al servicio web correspondiente. */
-function fObtenerLista(metodo, array){
+/* Función que obtiene la lista pasada por parámetro de de BD. Para
+ello realiza una llamada ajax al servicio web correspondiente. */
+function fObtenerLista(coleccion, array){
 
 	try {
 			
-        $.ajax({
-            type: "GET",
-            url: dir + "/OneDayGuide/rest/lista/"+metodo,
-            dataType: "jsonp",
-            contentType: "application/json; charset=utf-8",
-            timeout: 60000,
-            async: false,
-            success: function(data){      
-                fCargarArray(data, array);
-            },
-            failure: function(xhr, ajaxOptions, thrownError){
-                alert(thrownError);
-            },
-            cache: false
-        });
-        
-    }catch (e) {
-        alert('failed to call web service. Error: ' + e);
+	    $.ajax({
+	         type: "GET",
+	         url: dir + "/OneDayGuide/rest/lista/getColeccion/"+coleccion,
+	         dataType: "json",
+	         contentType: "application/json; charset=utf-8",
+	         timeout: 60000,
+	         async: false,
+	         success: function(data){ 
+	             fCargarArray(data, array);
+	         },
+	         failure: function(xhr, ajaxOptions, thrownError){
+	             alert(thrownError);
+	         },
+	         cache: false
+	     });
+     
+	 }catch (e) {
+	     alert('failed to call web service. Error: ' + e);
+	 }
+
+}
+
+function fCargarArray(data, array){
+	
+	for (var i = 0; i < data.length; i++) {
+		
+		var id = data[i]._id;
+		var desc;
+		if(idioma=="en-Idioma"){
+			desc = data[i].descEn;
+		}else if(idioma=="eu-Idioma"){
+			desc = data[i].descEu;
+		}else{
+			desc = data[i].descCa;
+		}
+		//alert(desc);
+		array[i] = [id, desc];
+		
     }
 
 }
@@ -568,8 +571,8 @@ function anadirActividad(numElemento){
 	chgLang(idioma);
 
 	fCargarCombo(aActividades, "actividad"+numElemento, "registro.seleccionActividad");
-	fCargarCombo(aDisponibilidadesActividad, "disponibilidadDia"+numElemento, "registro.seleccionDisponibilidad");
-	fCargarCombo(aDisponiblidadHoraActividad, "disponibilidadHora"+numElemento, "registro.seleccionHorario");
+	fCargarCombo(aDiasActividades, "disponibilidadDia"+numElemento, "registro.seleccionDisponibilidad");
+	fCargarCombo(aHorariosActividades, "disponibilidadHora"+numElemento, "registro.seleccionHorario");
 	
 }
 
