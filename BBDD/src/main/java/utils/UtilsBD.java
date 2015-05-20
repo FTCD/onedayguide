@@ -17,20 +17,27 @@ public class UtilsBD {
   		
     public static DB getBaseDatos() throws IOException {
 
-    	String host = System.getenv("OPENSHIFT_MONGODB_DB_HOST");
-    	int port = Integer.parseInt(System.getenv("OPENSHIFT_MONGODB_DB_PORT"));
+    	//String host = System.getenv("OPENSHIFT_MONGODB_DB_HOST");
+    	//int port = Integer.parseInt(System.getenv("OPENSHIFT_MONGODB_DB_PORT"));
+    	String host = "Iban";
+    	int port = 27017;
         
         //String user = System.getenv("admin");
         //String password = System.getenv("b6iuICaK79EW");
 
         try {
         	
-        	//MongoCredential credential = MongoCredential.createCredential(user, baseDeDatos, password.toCharArray());
-        	//MongoClient mongoClient = new MongoClient(new ServerAddress(mongoURIString), Arrays.asList(credential));
+        	//OPENSHIFT
+        	/*MongoCredential credential = MongoCredential.createCredential(user, baseDeDatos, password.toCharArray());
+        	MongoClient mongoClient = new MongoClient(new ServerAddress(mongoURIString), Arrays.asList(credential));
+        	
+        	boolean auth = dataBaseDB.authenticate("admin", "b6iuICaK79EW".toCharArray());*/
+        	
+        	//LOCAL
         	MongoClient mongoClient = new MongoClient(new ServerAddress(host, port));
             DB dataBaseDB = mongoClient.getDB("onedayguide");
+            boolean auth = true;
             
-            boolean auth = dataBaseDB.authenticate("admin", "b6iuICaK79EW".toCharArray());
         	if (auth) {
          
         		return dataBaseDB;
@@ -49,7 +56,8 @@ public class UtilsBD {
         
     }
     
-    public static DBCollection getColeccion(DB database, String mongoColeccion) throws IOException {
+    public static DBCollection getColeccion(DB database, String mongoColeccion) 
+    		throws IOException {
     	
         DBCollection coleccion = database.getCollection(mongoColeccion);
         
@@ -58,7 +66,8 @@ public class UtilsBD {
     }
     
     @SuppressWarnings("null")
-	public static DBCollection setColeccion(DB database, String mongoColeccion, DBObject dbObject) throws IOException {
+	public static DBCollection setColeccion(DB database, String mongoColeccion, DBObject dbObject) 
+			throws IOException {
     	
         DBCollection coleccion = database.getCollection(mongoColeccion);
         if(coleccion == null){
