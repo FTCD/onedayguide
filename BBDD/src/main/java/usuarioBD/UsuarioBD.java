@@ -1,61 +1,63 @@
 package main.java.usuarioBD;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import main.java.entities.Usuario;
 import main.java.utils.UtilsBD;
 
+import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 
 public class UsuarioBD {
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static List<Usuario> getUsuarios(){
-		
-		ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
-		
-		Usuario usuario = new Usuario();
+	public static String getUsers(String latitud, String longitud){
 		
 		try {
 			
-			//Para pruebas en servidor openshift
 			DB baseDatos = UtilsBD.getBaseDatos();
 			
-			DBCollection tablaUsuarios = UtilsBD.getColeccion(baseDatos, "usuarios");
+			double[] coords = new double[2];
+			coords[0] = Double.parseDouble(longitud);
+			coords[1] = Double.parseDouble(latitud);
 			
-			DBCursor cursor = tablaUsuarios.find();
+			System.out.println("COORDENADAS: " + coords[0] + ", " + coords[1]);
 			
-			while (cursor.hasNext()) {
-				
-				usuario = new Usuario();
-				
-				DBObject usuarioObject = (DBObject) cursor.next();
-				usuario.setUserName(usuarioObject.get("userName").toString());
-				usuario.setDireccion(usuarioObject.get("direccion").toString());
-				usuario.setColaborador(Boolean.valueOf(usuarioObject.get("userName").toString()));
-				usuario.setLatitud(Double.valueOf(usuarioObject.get("latitud").toString()));
-				usuario.setLongitud(Double.valueOf(usuarioObject.get("longitud").toString()));
-				usuario.setEmail(usuarioObject.get("email").toString());
-				usuario.setTelefono(usuarioObject.get("telefono").toString());
-				usuario.setListaActividades(
-					(List<List>) usuarioObject.get("listaActividadesDisponibilidad"));
-				usuario.setListaIdiomas(
-					(List<List>) usuarioObject.get("listaIdiomas"));
-				listaUsuarios.add(usuario);
-				
+			long distance = 1000;
+
+			DBObject query = BasicDBObjectBuilder.start()
+			    .push("location")
+			        .add("$maxDistance", distance)
+			        .push("$near")
+			            .push("$geometry")
+			                .add("type", "Point")
+			                .add("coordinates", coords)
+			    .get();
+			
+			DBCollection collection = UtilsBD.getColeccion(baseDatos, "usuarios");
+			
+			DBCursor cursor = collection.find(query);
+			
+			try {
+			    while(cursor.hasNext()) {
+			        System.out.println(cursor.next());
+			    }
+			} finally {
+			    cursor.close();
 			}
+			
+			System.out.println("CURSOR :" + cursor);
+			
+	        return JSON.serialize(cursor);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return listaUsuarios;
+		return null;
 		
 	}
 	
