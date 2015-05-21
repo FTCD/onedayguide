@@ -5,11 +5,10 @@ var idiomaSel = "es";//Idioma seleccionado en la página.
 
 var map = null;
 var anadirListener = true;
-//var buscarUsuarios = true;
 
 //Variables para capturar la localidad introducida en la página de inicio.
 
-var markers = [];
+//var markers = [];
 var localidad = unescape(getUrlVars()["localidad"]);//Obtenemos la localidad introducida en la página de inicio.
 var latitudLocalidad;//Aqui dejaremos la latitud de la localidad introducida por el usuario.
 var longitudLocalidad;//Aqui dejaremos la longitud de la localidad introducida por el usuario.
@@ -118,9 +117,8 @@ function anadirListenerInputBuscar(){
 function fLocalizarLocalidad(){
 
 	if(document.getElementById('inputSearch').value!=""){
-		markers = [];
+		//markers = [];
 		localidad = document.getElementById('inputSearch').value;
-		//buscarUsuarios = false;
 		showlocation();
 
 	}
@@ -145,8 +143,9 @@ function fObtenerListaUsuarios(map){
         success: function(data){
             for (var i = 0; i < data.length; i++) {	
             	var email = data[i].email;
-				var latitud = data[i].latitud;
-				var longitud = data[i].longitud;
+            	var localizacion = data[i].localizacion;
+            	var longitud = localizacion.coordinates[0];
+            	var latitud = localizacion.coordinates[1];
 				var colaborador = data[i].colaborador;
 				var listaIdiomas = data[i].listaIdiomas;
 				var listaActividades = data[i].listaActividades;
@@ -251,14 +250,14 @@ function setMarkers(map, users) {
 	  	});
 	  	
 	  	//Se añade al array de markers para agrupar
-	  	markers.push(marker);
+	  	//markers.push(marker);
   	
 	}
 	
 	//map.fitBounds(bounds);
 	
 	//Se agrupan los markers
-	var markerCluster = new MarkerClusterer(map, markers);
+	//var markerCluster = new MarkerClusterer(map, markers);
   	
 }
 

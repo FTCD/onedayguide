@@ -4,11 +4,10 @@ import java.io.IOException;
 
 import main.java.utils.UtilsBD;
 
-import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
-import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
 public class UsuarioBD {
@@ -17,38 +16,38 @@ public class UsuarioBD {
 		
 		try {
 			
+			//Se obtiene la base de datos
 			DB baseDatos = UtilsBD.getBaseDatos();
 			
-			double[] coords = new double[2];
-			coords[0] = Double.parseDouble(longitud);
-			coords[1] = Double.parseDouble(latitud);
+			//Se forma la query necesaria para hacer la consulta por coordenadas
 			
-			System.out.println("COORDENADAS: " + coords[0] + ", " + coords[1]);
+			//Distancia de búsqueda
+			double distance = 20000; //20 kms
 			
-			long distance = 1000;
-
-			DBObject query = BasicDBObjectBuilder.start()
-			    .push("location")
-			        .add("$maxDistance", distance)
-			        .push("$near")
-			            .push("$geometry")
-			                .add("type", "Point")
-			                .add("coordinates", coords)
-			    .get();
+			//Se pasan las coordenadas pasadas por parámetro que hacen referencia
+			//al centro del mapa
+			BasicDBList geoCoord = new BasicDBList();
+			geoCoord.add(Double.parseDouble(longitud));
+			geoCoord.add(Double.parseDouble(latitud));
 			
-			DBCollection collection = UtilsBD.getColeccion(baseDatos, "usuarios");
+			//Se meten las coordenadas como un punto para hacer la búsqueda
+			BasicDBObject coordinates = new BasicDBObject("type", "Point");
+			coordinates.append("coordinates", geoCoord);
+			BasicDBObject geometry = new BasicDBObject("$geometry", coordinates);
 			
-			DBCursor cursor = collection.find(query);
+			//Se añade al objeto la distancia máxima de búsqueda
+			geometry.append("$maxDistance", distance);
 			
-			try {
-			    while(cursor.hasNext()) {
-			        System.out.println(cursor.next());
-			    }
-			} finally {
-			    cursor.close();
-			}
+			//Se añade la condición de cercanía
+			BasicDBObject near = new BasicDBObject();
+			near.append("$nearSphere", geometry);
 			
-			System.out.println("CURSOR :" + cursor);
+			//Se añade la query sobre el campo GEOJSON sobre el que se efectuará
+			BasicDBObject query = new BasicDBObject();
+			query.append("localizacion", near); //"localizacion" es el nombre del objeto GEOJON en la BD
+			
+			//Se lanza la consulta
+			DBCursor cursor = (UtilsBD.getColeccion(baseDatos, "usuarios")).find(query);
 			
 	        return JSON.serialize(cursor);
 			

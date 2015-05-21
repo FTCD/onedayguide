@@ -15,14 +15,13 @@ import javax.ws.rs.core.MediaType;
 import main.java.entities.Usuario;
 import main.java.usuarioBusiness.UsuarioBusiness;
 
-import org.eclipse.persistence.oxm.JSONWithPadding;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 @Path("/usuario")
 public class UsuarioServices {	
 		
-	@GET
+	/*@GET
 	@Path("/getUser/{name}")
 	@Produces("application/x-javascript")
 	public JSONWithPadding<Usuario> getUser (@QueryParam("callback") String callback,
@@ -34,7 +33,7 @@ public class UsuarioServices {
 		
 		return new JSONWithPadding<Usuario>(u,callback);
 		 
-	}
+	}*/
 		
 	@GET
 	@Path("/getUsers/{latitud}/{longitud}")
