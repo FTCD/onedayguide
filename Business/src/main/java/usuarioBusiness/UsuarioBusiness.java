@@ -12,9 +12,9 @@ public class UsuarioBusiness {
 		
 	}*/
 	
-	public static String getUsers(String latitud, String longitud){
+	public static String getUsers(String latitud, String longitud, String distancia){
 		
-		return UsuarioBD.getUsers(latitud, longitud);
+		return UsuarioBD.getUsers(latitud, longitud, distancia);
 
 	}
 

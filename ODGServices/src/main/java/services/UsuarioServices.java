@@ -36,13 +36,14 @@ public class UsuarioServices {
 	}*/
 		
 	@GET
-	@Path("/getUsers/{latitud}/{longitud}")
+	@Path("/getUsers/{latitud}/{longitud}/{distancia}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getUsers (@QueryParam("callback") String callback,
 			@PathParam("latitud") String latitud,
-			@PathParam("longitud") String longitud) {
+			@PathParam("longitud") String longitud,
+			@PathParam("distancia") String distancia) {
 		
-		return UsuarioBusiness.getUsers(latitud, longitud);
+		return UsuarioBusiness.getUsers(latitud, longitud, distancia);
 		 
 	}
 	

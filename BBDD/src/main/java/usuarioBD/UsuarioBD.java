@@ -12,7 +12,7 @@ import com.mongodb.util.JSON;
 
 public class UsuarioBD {
 
-	public static String getUsers(String latitud, String longitud){
+	public static String getUsers(String latitud, String longitud, String distancia){
 		
 		try {
 			
@@ -22,7 +22,9 @@ public class UsuarioBD {
 			//Se forma la query necesaria para hacer la consulta por coordenadas
 			
 			//Distancia de búsqueda
-			double distance = 20000; //20 kms
+			//double distance = 20000; //20 kms
+			double distance = Double.parseDouble(distancia);
+
 			
 			//Se pasan las coordenadas pasadas por parámetro que hacen referencia
 			//al centro del mapa

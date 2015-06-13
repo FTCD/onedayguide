@@ -19,7 +19,7 @@ public class UtilsBD {
 
     	//String host = System.getenv("OPENSHIFT_MONGODB_DB_HOST");
     	//int port = Integer.parseInt(System.getenv("OPENSHIFT_MONGODB_DB_PORT"));
-    	String host = "Iban";
+    	String host = "linux";
     	int port = 27017;
         
         //String user = System.getenv("admin");

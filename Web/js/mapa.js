@@ -5,6 +5,9 @@ var idiomaSel = "es";//Idioma seleccionado en la página.
 
 var map = null;
 var anadirListener = true;
+var longitud = null;
+var latitud = null;
+var distancia = null;
 
 //Variables para capturar la localidad introducida en la página de inicio.
 
@@ -84,7 +87,7 @@ function callback(){
 
 	var homeLatLong=new google.maps.LatLng(latitudLocalidad,longitudLocalidad);
 	
-	map.setZoom(9);
+	map.setZoom(13);
 	map.setCenter(homeLatLong);
 	
 	//Obtenemos los datos de usuarios mediante el servicio web y
@@ -130,13 +133,13 @@ function fLocalizarLocalidad(){
 function fObtenerListaUsuarios(map){
 	
 	var users = new Array();
-	var coordinates = map.getCenter();
+	var distance = fCalcularDistancia(map);
 	
 	try {
     
       $.ajax({
         type: "GET",
-        url: dir + "/OneDayGuide/rest/usuario/getUsers/" + coordinates.lat() + "/" +coordinates.lng(),
+        url: dir + "/OneDayGuide/rest/usuario/getUsers/" + latitud + "/" + longitud + "/" + distancia,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         timeout: 60000,
@@ -166,6 +169,22 @@ function fObtenerListaUsuarios(map){
     }
 
 }
+
+/* Función que recupera la distancia desde el centro del mapa a la esquina arriba-derecha, para el maxdistance del near (mongodb)*/
+function fCalcularDistancia(map){
+	
+	var bounds = map.getBounds();
+
+	var center = bounds.getCenter();
+	var ne = bounds.getNorthEast();
+
+	latitud = center.lat();
+	longitud = center.lng();
+
+	distancia = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(latitud, longitud), new google.maps.LatLng(ne.lat(), ne.lng()));
+
+
+}	
 
 /* Función que llama realiza la llamada a la función que pone los marcadores en el mapa. */
 function fAnadirMarkers(map, users){
